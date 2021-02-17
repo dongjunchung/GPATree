@@ -9,6 +9,19 @@
 #' @param fdrControl Method to control FDR. Possible values are "global" (global FDR control) and "local" (local FDR control).
 #'
 #' @return Returns a binary matrix indicating the association between SNPs and phenotype, where its rows match those of input pvalue matrix for function GPATREE.
+#' @examples
+#' \dontrun{
+#' library(GPATree)
+#'
+#' # load GPATree example data
+#' data(GPATreeExampleData)
+#'
+#' #fitting the GPATree model
+#' fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+#'
+#' # pruning the GPATree model fit
+#' assoc.fit <- assoc(fit, FDR = 0.05, fdrControl = "global")
+#' }
 #' @export
 #' @name assoc
 #' @aliases assoc,GPATree-method
@@ -16,21 +29,21 @@ setMethod(
   f="assoc",
   signature="GPATree",
   definition=function( object, FDR=0.05, fdrControl="global") {
-    
+
     if ( fdrControl != "global" & fdrControl != "local" ) {
       stop( "Invalid value for 'fdrControl' argument! It should be either 'global' or 'local'." )
     }
-    
+
     if ( FDR < 0 | FDR > 1 ) {
       stop( "Invalid value for 'FDR' argument! FDR should be between zero and one." )
     }
-    
+
     # association mapping
     fdrmat <- 1 - object@fit$Zmarg
     amat <- matrix( 0, nrow(fdrmat), ncol(fdrmat))
     colnames(amat) <- paste('P', 1:ncol(fdrmat), sep = '')
     rownames(amat) <- rownames(object@fit$Zmarg)
-    
+
     if ( fdrControl == "local" ) {
       message( "Info: Association mapping based on the local FDR control at level ", FDR, "." )
       amat[ fdrmat <= FDR ] <- 1
@@ -45,7 +58,7 @@ setMethod(
         amat[ pp <= cutoff, j ] <- 1
       }
     }
-    
+
     # leaf mapping ####
     if (ncol(amat) >= 1){
       amat <- as.data.frame(amat)
@@ -57,9 +70,9 @@ setMethod(
       whichnodes <- rownames(object@fit$fit$frame)[object@fit$fit$where]
       amat$leaf <- leaf_frame$var[match(whichnodes, rownames(leaf_frame))]
     }
-    
+
     return(amat)
-  
+
     }
 
 )

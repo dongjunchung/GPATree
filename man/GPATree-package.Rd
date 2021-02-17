@@ -28,8 +28,11 @@ library(GPATree)
 # load GPATree example data
 data(GPATreeExampleData)
 
-#fitting the GPATree model
+# fitting the GPATree model
 fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+
+# get functional annotation information
+leaf(fit)
 
 # association mapping
 assoc.gpatree <- assoc(fit, FDR = 0.01, fdrControl = 'global')

@@ -20,6 +20,20 @@ Returns a binary matrix indicating the association between SNPs and phenotype, w
 \description{
 This function will implement association mapping for the GPA-Tree model.
 }
+\examples{
+\dontrun{
+library(GPATree)
+
+# load GPATree example data
+data(GPATreeExampleData)
+
+#fitting the GPATree model
+fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+
+# pruning the GPATree model fit
+assoc.fit <- assoc(fit, FDR = 0.05, fdrControl = "global")
+}
+}
 \author{
 Aastha Khatiwada
 }

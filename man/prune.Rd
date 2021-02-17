@@ -20,6 +20,20 @@ GPA-Tree model output.
 Prune GPA-Tree model fit
 This function will prune the GPA-Tree model fit using the given cp value.
 }
+\examples{
+\dontrun{
+library(GPATree)
+
+# load GPATree example data
+data(GPATreeExampleData)
+
+#fitting the GPATree model
+fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+
+# pruning the GPATree model fit
+pruned.fit <- prune(fit, cp = 0.005)
+}
+}
 \author{
 Aastha Khatiwada
 }

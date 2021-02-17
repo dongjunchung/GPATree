@@ -16,6 +16,18 @@ Returns a matrix where each row corresponds to a leaf from the GPA-Tree model fi
 \description{
 This function will provide the annotation combination relevant to each leaf in the GPA-Tree model.
 }
+\examples{
+\dontrun{
+library(GPATree)
+
+# load GPATree example data
+data(GPATreeExampleData)
+
+#fitting the GPATree model
+fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+leaf(fit)
+}
+}
 \author{
 Aastha Khatiwada
 }
