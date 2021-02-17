@@ -1,0 +1,139 @@
+---
+title: "Prioritizing GWAS Results and Identifying Risk SNP-Associated Functional Annotation Tree with `**GPATree**' Package"
+subtitle:
+- Aastha Khatiwada$^1$, Bethany J. Wolf$^1$, Ayse Selen Yilmaz$^2$, Paula S. Ramos$^{1,3}$, Maciej Pietrzak$^2$, Andrew Lawson$^1$, Kelly J. Hunt$^1$, Hang J. Kim$^4$, Dongjun Chung$^{2}$
+author:
+- $^1$Department of Public Health Sciences, Medical University of South Carolina, 
+- Charleston, South Carolina, USA
+- $^2$Department of Biomedical Informatics, The Ohio State University, Columbus, 
+- Ohio, USA
+- $^3$Department of Medicine, Medical University of South Carolina, Charleston, 
+- South Carolina, USA
+- $^4$Department of Mathematical Sciences, University of Cincinnati, Cincinnati, 
+- Ohio, USA
+date: "`r format(Sys.time(), '%m/%d/%Y')`"
+output:
+  pdf_document:
+    number_sections: yes
+bibliography: references.bib
+fontsize: 10pt
+geometry: margin=3cm
+
+vignette: >
+  %\VignetteIndexEntry{GPATree-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  # tidy = TRUE,
+  prompt = TRUE,
+  # split=TRUE,
+  # tidy = TRUE,
+  comment = ""
+)
+```
+# Overview
+<!-- \section{Overview} -->
+
+This vignette provides an introduction to the \texttt{GPATree} package. R package \texttt{GPATree} implements GPA-Tree, a novel statistical approach to prioritize genome-wide association studies (GWAS) results while simultaneously identifying the combinations of functional annotations associated with risk-associated genetic variants. GPA-Tree integrates GWAS summary statistics and functional annotation data within a unified framework, by combining a decision tree algorithm (CART)[@breiman1984classification] within the hierarchical model.
+
+The package can be loaded with the command:
+
+
+```{r setup, include=TRUE, message=FALSE, warning=FALSE}
+library(GPATree)
+```
+```{r,eval=TRUE, include=FALSE, echo = FALSE}
+options(digits = 4)
+```
+This vignette is organized as follows. Sections \ref{fitting} and \ref{shiny} illustrate the recommended \texttt{GPATree-ShinyGPATree} workflow, which provides convenient and interactive genetic data analysis interface. Advanced users might also find Sections \ref{pruning} – \ref{association} useful and these command lines can be used for integrating GPA-Tree as part of the more comprehensive genetic data analysis workflow, for example.
+
+Please feel free to contact Dongjun Chung at \texttt{chung.911@osc.edu} for any questions or suggestions regarding the `\texttt{GPATree}' package.
+
+# Workflow
+<!-- \section{Workflow}\label{workflow} -->
+
+In this vignette, we illustrate the GPA-Tree analysis workflow, using the simulated data provided as the  \texttt{GPATreeExampleData} in the \texttt{GPATree} package. In the simulated data, the number of SNPs is set to $M=10,000$ and the number of functional annotations is set to $K=10$. The GWAS association  $p$-values and the binary functional annotation information are stored in \texttt{GPATreeExampleData\$gwasPval} and \texttt{GPATreeExampleData\$annMat}, respectively. The number of rows in \texttt{GPATreeExampleData\$gwasPval} is assumed to be the same as the number of rows in \texttt{GPATreeExampleData\$annMat}, where the $i$-th ($i=1,...,M$) row of \texttt{gwasPval} and \texttt{annMat} correspond to the same SNP.
+
+
+
+```{r include=TRUE, message=FALSE, warning=FALSE, split=TRUE}
+data(GPATreeExampleData)
+dim(GPATreeExampleData$gwasPval)
+head(GPATreeExampleData$gwasPval)
+dim(GPATreeExampleData$annMat)
+head(GPATreeExampleData$annMat)
+```
+<!-- \subsection{Fitting the GPA-Tree Model}\label{fitting} -->
+## Fitting the GPA-Tree Model \label{fitting}
+
+We can fit the GPA-Tree model using the GWAS association $p$-values (\texttt{GPATreeExampleData\$gwasPval}) and functional annotation data (\texttt{GPATreeExampleData\$annMat}) described above, using the code shown below.
+
+```{r GPATree, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE, message=FALSE}
+fit.GPATree <- GPATree(gwasPval = GPATreeExampleData$gwasPval,
+                       annMat = GPATreeExampleData$annMat,
+                       initAlpha = 0.1,
+                       cpTry = 0.005)
+```
+```{r, eval=TRUE, include=FALSE, echo = FALSE}
+options(digits = 4)
+```
+```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+fit.GPATree
+```
+
+
+<!-- \subsection{ShinyGPATree}\label{shiny} -->
+
+## ShinyGPATree \label{shiny}
+
+The following command can be used to initialize the ShinyGPATree app. ShinyGPATree allows for interactive and dynamic investigation of disease-risk-associated SNPs and functional annotation trees using R Shiny.
+
+```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE, tidy=TRUE, comment=""}
+ShinyGPATree(fit.GPATree)
+```
+
+<!-- \subsection{Prunning GPA-Tree model fit}\label{pruning} -->
+## Advanced use \label{advuse}
+### Prunning GPA-Tree model fit \label{pruning}
+
+The following command will prune the GPA-Tree model using any cp value between 0 and 1.
+
+```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE}
+fit.GPATree.pruned <- prune(fit.GPATree, cp)
+```
+
+<!-- \subsection{Functional annotation tree}\label{annotation} -->
+### Functional annotation tree \label{annotation}
+The following command will plot the GPA-Tree functional annotation tree and provide information about the leaves (terminal nodes) in the tree.
+
+```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE}
+plot(fit.GPATree)
+```
+
+```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+leaf(fit.GPATree)
+```
+
+<!-- \subsection{Association mapping}\label{association} -->
+### Association mapping\label{association}
+
+Based on the fitted GPA-Tree model, we can make statistical inference about SNPs by identifying: $(1)$ risk-associated SNPs and (2) the leaves of the GPA-Tree model in which the risk-associated SNP are located in using the code below.
+```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+assoc.SNP.GPATree <- assoc(fit.GPATree, 
+                           FDR = 0.05, 
+                           fdrControl="global")
+head(assoc.SNP.GPATree)
+table(assoc.SNP.GPATree$P1)
+table(assoc.SNP.GPATree$leaf)
+table(assoc.SNP.GPATree$P1, assoc.SNP.GPATree$leaf)
+```
+
+The \texttt{GPATree\_assoc} function returns two columns. The first column contains binary values where 1 indicates that the SNP is associated with the phenotype and 0 indicates otherwise. The second column provides information regarding the leaf in which the SNP is located in the GPA-Tree plot. The \texttt{GPATree\_assoc} allows both local (\texttt{fdrControl="local"}) and global FDR controls (\texttt{fdrControl="global"}) and users can set the threshold using the argument `\texttt{FDR}'. For \texttt{GPATreeExampleData}, GPA-Tree model identified $1458$ risk SNPs at the nominal global FDR level of $0.05$.
+
+
+# References
+
