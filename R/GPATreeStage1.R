@@ -35,7 +35,7 @@ GPATreeStage1 <- function(gwasPval, annMat, initAlpha=0.1){
   pi[ yi <= 1e-4 ] <- 0.9
   pi[ yi > 1e-4 ] <- 0.1
   names(pi) <- names(yi)
-  
+
   # storing
   alphalist <- rep( NA, iter_max )
   liclist <- rep( NA, iter_max )
@@ -103,13 +103,13 @@ GPATreeStage1 <- function(gwasPval, annMat, initAlpha=0.1){
   names(beta_list)[1:(nAnn+1)] <- c('beta_int',paste('beta_A', 1:nAnn, sep = ''))
 
   message( "Info: Stage 1 of GPA-Tree completed.")
-  
+
   return_out <- list()
   return_out$num_iter_stage1 = iter_cur
   return_out$pi_stage1 = pi
   return_out$alpha_stage1 = alpha
   return_out$beta_stage1 = beta_list
-  
+
   return(return_out)
 
 }

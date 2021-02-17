@@ -16,3 +16,10 @@ setGeneric( name = "leaf",
 setGeneric( name = "decTree",
             def = function( object, ... ) {standardGeneric("decTree")}
 )
+
+setGeneric( name = "plot",
+            def = function( x, y, ...) {standardGeneric("plot")}
+)
+
+
+

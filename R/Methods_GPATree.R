@@ -1,5 +1,7 @@
+#' @import graphics
+#' @import methods
+#' @importFrom rpart.plot rpart.plot
 # generic methods for "GPATree" class
-
 setMethod(
   f="show",
   signature="GPATree",
@@ -13,7 +15,7 @@ setMethod(
     M <- nrow(object@gwasPval)
     nAnn <- ncol(object@annMat)
     nGWAS<- ncol(object@gwasPval)
-
+    l <- leaf(object)
     # estimates
 
     est_alpha = object@fit$alpha
@@ -25,13 +27,18 @@ setMethod(
     cat( "\tNumber of SNPs: ", M , "\n", sep="" )
     if(nAnn!=0) {
     cat( "\tAlpha estimate: ", est_alpha , "\n", sep="" )
-    cat( "Functiona annotation tree description:\n" )
-    print( leaf(object) )
+    cat( "Functional annotation tree description:\n" )
+    if (nrow(l) <= 15){
+      print( l )
+    } else {
+      cat("\tNumber of leaves (terminal nodes): ", nrow(l), "\n", sep="")
+    }
     } else {}
     cat( "--------------------------------------------------\n" )
   }
 )
 
+#' @export
 setMethod(
   f="plot",
   signature=c(x = "GPATree", y = "missing"),
