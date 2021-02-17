@@ -3,8 +3,7 @@
 \name{prune}
 \alias{prune}
 \alias{prune,GPATree-method}
-\title{Prune GPA-Tree model fit
-This function will prune the GPA-Tree model fit using the given cp value.}
+\title{Prune GPA-Tree model fit}
 \usage{
 \S4method{prune}{GPATree}(object, cp = 0.001)
 }
@@ -17,7 +16,6 @@ This function will prune the GPA-Tree model fit using the given cp value.}
 GPA-Tree model output.
 }
 \description{
-Prune GPA-Tree model fit
 This function will prune the GPA-Tree model fit using the given cp value.
 }
 \examples{

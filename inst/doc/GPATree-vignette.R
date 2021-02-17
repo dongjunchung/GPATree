@@ -37,7 +37,7 @@ fit.GPATree
 #  ShinyGPATree(fit.GPATree)
 
 ## ---- eval=FALSE, include=TRUE, message=FALSE, warning=FALSE------------------
-#  fit.GPATree.pruned <- prune(fit.GPATree, cp)
+#  fit.GPATree.pruned <- prune(fit.GPATree, 0.001)
 
 ## ---- eval=FALSE, include=TRUE, message=FALSE, warning=FALSE------------------
 #  plot(fit.GPATree)

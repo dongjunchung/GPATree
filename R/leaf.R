@@ -1,12 +1,12 @@
-#' Association mapping
+#' Functional annotation tree.
 #'
-#' This function will provide the annotation combination relevant to each leaf in the GPA-Tree model.
+#' This function will provide the annotation combinations relevant to risk-associated SNPs.
 #'
 #' @author  Aastha Khatiwada
 #'
 #' @param object An object of class GPATree.
 #'
-#' @return Returns a matrix where each row corresponds to a leaf from the GPA-Tree model fit and contains information regarding the local FDR for SNPs in the leaf, and also information regarding annotations that are 0 or 1 for the leaf.
+#' @return Returns a matrix where each row corresponds to a leaf from the GPA-Tree model fit and contains information regarding the local FDR for SNPs in the leaf, and also information regarding annotations that are enriched (1) or not enriched (0) for the leaf.
 #' @examples
 #' \dontrun{
 #' library(GPATree)

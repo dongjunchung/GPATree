@@ -1,4 +1,5 @@
 #' Prune GPA-Tree model fit
+#'
 #' This function will prune the GPA-Tree model fit using the given cp value.
 #'
 #' @author  Aastha Khatiwada

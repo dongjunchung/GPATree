@@ -18,6 +18,6 @@ Imports: readr, rpart, rpart.plot, quantreg, rpart.utils, gtools,
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-02-17 21:16:52 UTC; aasthakhatiwada
+Packaged: 2021-02-17 23:32:09 UTC; aasthakhatiwada
 Author: Aastha Khatiwada [aut, cre] (<https://orcid.org/0000-0002-3565-451X>)
 Maintainer: Aastha Khatiwada <asthakhatiwada@gmail.com>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ShinyGPATree.R
 \name{ShinyGPATree}
 \alias{ShinyGPATree}
-\title{Run ShinyGPATree App for dynamic and interactive}
+\title{Run ShinyGPATree App}
 \usage{
 ShinyGPATree(object)
 }
@@ -13,7 +13,21 @@ ShinyGPATree(object)
 Output of GPA-Tree model.
 }
 \description{
-This function will run the shinyGPATree App.
+This function will initialize the ShinyGPATree App for dynamic and interactive visualization of GPA-Tree model results.
+}
+\examples{
+\dontrun{
+library(GPATree)
+
+# load GPATree example data
+data(GPATreeExampleData)
+
+#fitting the GPATree model
+fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+
+# initialize the ShinyGPATree app
+ShinyGPATree(fit)
+}
 }
 \author{
 Aastha Khatiwada

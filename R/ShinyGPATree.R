@@ -1,11 +1,24 @@
-#' Run ShinyGPATree App for dynamic and interactive
+#' Run ShinyGPATree App
 #'
-#' This function will run the shinyGPATree App.
+#' This function will initialize the ShinyGPATree App for dynamic and interactive visualization of GPA-Tree model results.
 #'
 #' @author  Aastha Khatiwada
 #'
 #' @param object An object of class GPATree.
 #' @return Output of GPA-Tree model.
+#' @examples
+#' \dontrun{
+#' library(GPATree)
+#'
+#' # load GPATree example data
+#' data(GPATreeExampleData)
+#'
+#' #fitting the GPATree model
+#' fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+#'
+#' # initialize the ShinyGPATree app
+#' ShinyGPATree(fit)
+#' }
 #' @export
 
 ShinyGPATree <- function(object){
@@ -83,7 +96,7 @@ ShinyGPATree <- function(object){
                                                                    selected = 'global'))
                                         ),
                                         shiny::hr(),
-                                        shiny::checkboxGroupInput(inputId="assoc",
+                                        shiny::checkboxGroupInput(inputId="associd",
                                                                   label="Choose association status of SNPs",
                                                                   choices = list("Non-null" = 1, "Null" = 0),
                                                                   inline=TRUE,
@@ -136,7 +149,7 @@ ShinyGPATree <- function(object){
         assoc_out <- cbind(assoc_out, 1 - object@fit$Zmarg)
 
         if (ncol(object@fit$Zmarg) == 1){
-            colnames(assoc_out)[(ncol(object@fit$Zmarg)+2):ncol(assoc_out)] <- 'local FDR'
+            colnames(assoc_out)[3] <- 'local FDR'
         }
 
         if (is.null(rownames(assoc_out))) {
@@ -149,7 +162,7 @@ ShinyGPATree <- function(object){
         ncol_start_ann <- ncol(assoc_out)
 
         if (ncol(object@fit$Zmarg) == 1){
-            colnames(assoc_out)[(ncol(assoc_out)-ncol(object@fit$Zmarg)+1):ncol(assoc_out)] <- 'p-value'
+            colnames(assoc_out)[5] <- 'p-value'
         }
 
         assoc_out <- cbind(assoc_out, object@annMat)
@@ -291,7 +304,7 @@ ShinyGPATree <- function(object){
 
             select_rows <- c()
             for (i in 1:ncol(object@fit$Zmarg)) {
-                select_rows <- c(select_rows, which(assocOutnew[, i+1] == input$assoc))
+                select_rows <- c(select_rows, which(assocOutnew[, i+1] %in% input$associd))
             }
 
             assocOutnew <- assocOutnew[select_rows, ]

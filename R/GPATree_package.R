@@ -40,7 +40,6 @@
 #' # run the ShinyGPATree app using output from the GPATree method
 #' ShinyGPATree(fit)
 #' }
-#'
 #' @name GPATree-package
 #' @aliases GPATree-package,GPATree-method
 #' @docType package

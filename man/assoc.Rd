@@ -15,7 +15,7 @@
 \item{fdrControl}{Method to control FDR. Possible values are "global" (global FDR control) and "local" (local FDR control).}
 }
 \value{
-Returns a binary matrix indicating the association between SNPs and phenotype, where its rows match those of input pvalue matrix for function GPATREE.
+Returns a MX2 matrix where the row represents SNPs, the fist column indicates the association between each SNP and phenotype, and the second column indicates the leaf in which the SNP falls
 }
 \description{
 This function will implement association mapping for the GPA-Tree model.

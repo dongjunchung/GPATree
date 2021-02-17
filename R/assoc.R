@@ -8,7 +8,7 @@
 #' @param FDR FDR level. Value has to be between 0 and 1.
 #' @param fdrControl Method to control FDR. Possible values are "global" (global FDR control) and "local" (local FDR control).
 #'
-#' @return Returns a binary matrix indicating the association between SNPs and phenotype, where its rows match those of input pvalue matrix for function GPATREE.
+#' @return Returns a MX2 matrix where the row represents SNPs, the fist column indicates the association between each SNP and phenotype, and the second column indicates the leaf in which the SNP falls
 #' @examples
 #' \dontrun{
 #' library(GPATree)

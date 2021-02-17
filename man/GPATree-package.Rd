@@ -47,7 +47,6 @@ plot(pruned.fit)
 # run the ShinyGPATree app using output from the GPATree method
 ShinyGPATree(fit)
 }
-
 }
 \seealso{
 GPATree, assoc, leaf, prune, plot, ShinyGPATree

@@ -51,7 +51,7 @@ options(digits = 4)
 ```
 This vignette is organized as follows. Sections \ref{fitting} and \ref{shiny} illustrate the recommended \texttt{GPATree-ShinyGPATree} workflow, which provides convenient and interactive genetic data analysis interface. Advanced users might also find Sections \ref{pruning} – \ref{association} useful and these command lines can be used for integrating GPA-Tree as part of the more comprehensive genetic data analysis workflow, for example.
 
-Please feel free to contact Dongjun Chung at \texttt{chung.911@osc.edu} for any questions or suggestions regarding the `\texttt{GPATree}' package.
+Please feel free to contact Dongjun Chung at \texttt{chung.911@osu.edu} for any questions or suggestions regarding the `\texttt{GPATree}' package.
 
 # Workflow
 <!-- \section{Workflow}\label{workflow} -->
@@ -103,7 +103,7 @@ ShinyGPATree(fit.GPATree)
 The following command will prune the GPA-Tree model using any cp value between 0 and 1.
 
 ```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE}
-fit.GPATree.pruned <- prune(fit.GPATree, cp)
+fit.GPATree.pruned <- prune(fit.GPATree, 0.001)
 ```
 
 <!-- \subsection{Functional annotation tree}\label{annotation} -->

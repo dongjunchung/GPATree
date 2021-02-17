@@ -2,37 +2,64 @@
 % Please edit documentation in R/GPATree.R
 \name{GPATree}
 \alias{GPATree}
-\title{Implement the GPA-Tree approach}
+\title{Fit GPA-Tree model}
 \usage{
 GPATree(gwasPval, annMat, initAlpha = 0.1, cpTry = 0.001)
 }
 \arguments{
 \item{gwasPval}{A matrix of M X 1 dimension, where M is the number of SNPs. The matrix includes the GWAS association p-values for the phenotype. P-values must be between 0 and 1.}
 
-\item{annMat}{A matrix of binary annotations, where row and column correspond to SNPs and annotations, respectively.}
+\item{annMat}{A matrix of binary annotations, where rows and columns correspond to SNPs and annotations, respectively.}
 
 \item{initAlpha}{Initial value for alpha estimate. Default is 0.1.}
 
 \item{cpTry}{Complexity parameter (cp) value to be used. cpTry can be between 0 and 1 or NULL. Default is 0.001. When cpTry is NULL, GPATree will select the optimal cp to be used.}
 }
 \value{
-This function returns a \code{List} including:
-\itemize{
-\item numIterConvergence: number of iterations taken for GPA-Tree approach to converge in Stage 1 and 2.
-\item alpha: alpha estimated by the GPA-Tree approach.
-\item fit: GPA-Tree model fit.
-\item fitSelectVar: annotations included in the tree.
-\item Z: posterior probability of being null and non-null for all SNPs.
-\item zMarg: posterior probability of being a non-null SNP.
-\item pi: updated prior based on GPA-Tree model.
-\item licVec: vector of incomplete log-likelihood for all iteration of GPA-Tree approach.
-\item lcVec: list of complete log likelihood for all iteration of GPA-Tree approach.
-\item annMat: annMat provided by user.
-\item gwasPval: gwasPval provided by user.
-}
+Contructs a GPATree class object
 }
 \description{
-This function will implement the GPA-Tree approach.
+This function will implement the GPA-Tree approach for integrative analysis of GWAS and functional annotation data.
+}
+\details{
+GPATree fits the GPATree model. It requires to provide GWAS p-value to gwasPval and annotation data to annMat.
+It is assumed that number of rows of matrix in gwasPval and annMat are equal and correspond to the same SNP.
+assoc implements association mapping.
+
+plot takes in an object of class GPATree and will plot the functional annotation tree from the GPATree model.
+
+leaf takes in an object of class GPATree and will provide information regarding the functional annotations that are enriched (1) or not enriched (0) for SNPs in any leaf of the GPATree model plot.
+
+prune takes in an object of class GPATree and a cp parameter and will prune the GPATree model result. This function can be useful when the tree obtained from GPATree model is huge.
+
+ShinyGPATree app provides visualization of the GPA-Tree model, identifies risk-associated SNPs, and characterizes the combinations of functional annotations that can describe the risk-associated SNPs. The app can also be utilized to improve the visualization of the GPA-Tree model fit to collate or separate layers of the model (add or remove leaves).
+}
+\examples{
+\dontrun{
+library(GPATree)
+
+# load GPATree example data
+data(GPATreeExampleData)
+
+# fitting the GPATree model
+fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
+
+# get functional annotation information
+leaf(fit)
+
+# association mapping
+assoc.gpatree <- assoc(fit, FDR = 0.01, fdrControl = 'global')
+
+# pruning the GPATree model fit
+pruned.fit <- prune(fit, cp = 0.005)
+
+# plotting the GPATree model results
+plot(fit)
+plot(pruned.fit)
+
+# run the ShinyGPATree app using output from the GPATree method
+ShinyGPATree(fit)
+}
 }
 \author{
 Aastha Khatiwada
