@@ -11,7 +11,7 @@ install_github("asthakhatiwada/GPATree")
 ```
 
 # Usage
-The 'GPATree-vignette.pdf' provides a framework for the step-by-step genetic analysis using the 'GPATree' package. Help file generated using the following code also provides a good starting point to use the 'GPATree' package, including some example command lines:
+The 'GPATree-vignette.pdf' provides a framework for the step-by-step genetic analysis using the 'GPATree' package. Help file generated using the following code also provides a good starting point, including some example command lines, to use the 'GPATree' package:
 
 ```{r}
 library(GPATree)
