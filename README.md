@@ -25,4 +25,3 @@ The ShinyGPATree app provides visualization of the GPA-Tree model, identifies ri
 fit <- GPATree(GPATreeExampleData$gwasPval, GPATreeExampleData$annMat)
 ShinyGPATree(fit)
 ```
-initial desc
