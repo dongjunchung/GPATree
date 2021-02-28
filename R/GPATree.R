@@ -8,17 +8,18 @@
 #' @param annMat A matrix of binary annotations, where rows and columns correspond to SNPs and annotations, respectively.
 #' @param initAlpha Initial value for alpha estimate. Default is 0.1.
 #' @param cpTry Complexity parameter (cp) value to be used. cpTry can be between 0 and 1 or NULL. Default is 0.001. When cpTry is NULL, GPATree will select the optimal cp to be used.
-#' @details GPATree fits the GPATree model. It requires to provide GWAS p-value to gwasPval and annotation data to annMat.
+#' @details The GPATree() function fits the GPATree model. It requires to provide GWAS p-value to gwasPval and binary annotation data to annMat.
 #' It is assumed that number of rows of matrix in gwasPval and annMat are equal and correspond to the same SNP.
-#' assoc implements association mapping.
 #'
-#' plot takes in an object of class GPATree and will plot the functional annotation tree from the GPATree model.
+#' The assoc() function implements association mapping.
 #'
-#' leaf takes in an object of class GPATree and will provide information regarding the functional annotations that are enriched (1) or not enriched (0) for SNPs in any leaf of the GPATree model plot.
+#' The plot() function takes in an object of class GPATree and will plot the functional annotation tree from the GPATree model.
 #'
-#' prune takes in an object of class GPATree and a cp parameter and will prune the GPATree model result. This function can be useful when the tree obtained from GPATree model is huge.
+#' The leaf() function takes in an object of class GPATree and will provide information regarding the functional annotations that are enriched (1) or not enriched (0) for SNPs in any leaf of the GPATree model plot.
 #'
-#' ShinyGPATree app provides visualization of the GPA-Tree model, identifies risk-associated SNPs, and characterizes the combinations of functional annotations that can describe the risk-associated SNPs. The app can also be utilized to improve the visualization of the GPA-Tree model fit to collate or separate layers of the model (add or remove leaves).
+#' The prune() function takes in an object of class GPATree and a cp parameter and will prune the GPATree model result. This function can be useful when the tree obtained from GPATree model is huge.
+#'
+#' The ShinyGPATree app provides visualization of the GPA-Tree model, identifies risk-associated SNPs, and characterizes the combinations of functional annotations that can describe the risk-associated SNPs. The app can also be utilized to improve the visualization of the GPA-Tree model fit to collate or separate layers of the model (add or remove leaves).
 #' @examples
 #' \dontrun{
 #' library(GPATree)

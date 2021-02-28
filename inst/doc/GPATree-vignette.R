@@ -36,18 +36,25 @@ fit.GPATree
 ## ---- eval=FALSE, include=TRUE, message=FALSE, warning=FALSE, tidy=TRUE, comment=""----
 #  ShinyGPATree(fit.GPATree)
 
-## ---- eval=FALSE, include=TRUE, message=FALSE, warning=FALSE------------------
-#  fit.GPATree.pruned <- prune(fit.GPATree, 0.001)
+## ---- echo=FALSE, out.height="100%", out.width="100%", fig.cap="Screenshot of the ShinyGPATree app with the `Plot' tab open."----
+knitr::include_graphics("plot_tab.png")
 
-## ---- eval=FALSE, include=TRUE, message=FALSE, warning=FALSE------------------
-#  plot(fit.GPATree)
+## ---- echo=FALSE, out.height="100%", out.width="100%", fig.cap="Screenshot of the ShinyGPATree app with the `Info' tab open."----
+knitr::include_graphics("info_tab.png")
+
+## ---- eval=TRUE, include=TRUE, message=FALSE, warning=FALSE-------------------
+fit.GPATree.pruned <- prune(fit.GPATree, cp = 0.3)
+fit.GPATree.pruned
+
+## ---- eval=TRUE, include=TRUE, message=FALSE, warning=FALSE-------------------
+plot(fit.GPATree)
 
 ## ---- eval=TRUE, include=TRUE, message=FALSE, warning=FALSE-------------------
 leaf(fit.GPATree)
 
 ## ---- eval=TRUE, include=TRUE, message=FALSE, warning=FALSE-------------------
 assoc.SNP.GPATree <- assoc(fit.GPATree, 
-                           FDR = 0.05, 
+                           FDR = 0.01, 
                            fdrControl="global")
 head(assoc.SNP.GPATree)
 table(assoc.SNP.GPATree$P1)

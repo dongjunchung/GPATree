@@ -9,7 +9,7 @@ author:
 - Ohio, USA
 - $^3$Department of Medicine, Medical University of South Carolina, Charleston, 
 - South Carolina, USA
-- $^4$Department of Mathematical Sciences, University of Cincinnati, Cincinnati, 
+- $^4$Divison of Statistics and Data Science, University of Cincinnati, Cincinnati, 
 - Ohio, USA
 date: "`r format(Sys.time(), '%m/%d/%Y')`"
 output:
@@ -17,12 +17,13 @@ output:
     number_sections: yes
 bibliography: references.bib
 fontsize: 10pt
-geometry: margin=3cm
-
+geometry: margin=2.75cm
+r_build_args: '--compact-vignettes=both'
 vignette: >
   %\VignetteIndexEntry{GPATree-vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+
 ---
 
 ```{r, include = FALSE}
@@ -49,7 +50,7 @@ library(GPATree)
 ```{r,eval=TRUE, include=FALSE, echo = FALSE}
 options(digits = 4)
 ```
-This vignette is organized as follows. Sections \ref{fitting} and \ref{shiny} illustrate the recommended \texttt{GPATree-ShinyGPATree} workflow, which provides convenient and interactive genetic data analysis interface. Advanced users might also find Sections \ref{pruning} – \ref{association} useful and these command lines can be used for integrating GPA-Tree as part of the more comprehensive genetic data analysis workflow, for example.
+This vignette is organized as follows. Sections \ref{fitting} and \ref{shiny} illustrate the recommended \texttt{GPATree-ShinyGPATree} workflow, which provides convenient and interactive genetic data analysis interface. Advanced users might also find Sections \ref{pruning} – \ref{association} useful as the command lines can be used for integrating GPA-Tree as part of the more comprehensive genetic data analysis workflow, for example.
 
 Please feel free to contact Dongjun Chung at \texttt{chung.911@osu.edu} for any questions or suggestions regarding the `\texttt{GPATree}' package.
 
@@ -95,22 +96,33 @@ The following command can be used to initialize the ShinyGPATree app. ShinyGPATr
 ```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE, tidy=TRUE, comment=""}
 ShinyGPATree(fit.GPATree)
 ```
+Figure 1 shows the layout of the ShinyGPATree app, where the ‘Plot’ tab opens by default. The summary statistics displayed in the plot are automatically updated as the user input option for cp (in the log10 scale) on the left panel of the screen is modified. Users can also improve visualization of the functional annotation tree plot using the plot width and height options on the left panel. The `Download Plot’ button on the top allows users to download the functional annotation tree plot as a Portable Network Graphics (png) format file. Finally, a table titled ‘Leaf Description’ underneath the plot characterizes the functional annotations that are 0 or 1 for SNPs in specific leaves.
 
-<!-- \subsection{Prunning GPA-Tree model fit}\label{pruning} -->
+```{r, echo=FALSE, out.height="100%", out.width="100%", fig.cap="Screenshot of the ShinyGPATree app with the `Plot' tab open."}
+knitr::include_graphics("plot_tab.png")
+```
+
+As seen in Figure 2, the 'Info’ tab in the ShinyGPATree app opens the user interface for association mapping and functional annotation characterization for SNPs. Under this tab, users can find more information on specific SNPs driving the visualization. At the top of the panel, user input options for FDR level and FDR type (global vs. local) are located, followed by options to select SNPs that fall on specific leaves of the GPA-Tree model or have specific association status (non-risk-associated vs. risk-associated SNPs). The `SNP Table’ at the bottom of the ‘Info’ tab panel shows information for SNPs that satisfy all user-specified input options. Each row of the table represents a SNP and includes its ID, local FDR value, GWAS association p-value, the leaf in which it is located, and its complete functional annotation information. The ‘Download SNP Table’ button allows users to download the ‘SNP Table’ as a Microsoft Excel comma separated values (CSV) file format.
+
+```{r, echo=FALSE, out.height="100%", out.width="100%", fig.cap="Screenshot of the ShinyGPATree app with the `Info' tab open."}
+knitr::include_graphics("info_tab.png")
+```
+
 ## Advanced use \label{advuse}
 ### Prunning GPA-Tree model fit \label{pruning}
 
-The following command will prune the GPA-Tree model using any cp value between 0 and 1.
+The \texttt{prune()} function will prune the GPA-Tree model using any cp value between 0 and 1 as shown below.
 
-```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE}
-fit.GPATree.pruned <- prune(fit.GPATree, 0.001)
+```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+fit.GPATree.pruned <- prune(fit.GPATree, cp = 0.3)
+fit.GPATree.pruned
 ```
 
 <!-- \subsection{Functional annotation tree}\label{annotation} -->
 ### Functional annotation tree \label{annotation}
-The following command will plot the GPA-Tree functional annotation tree and provide information about the leaves (terminal nodes) in the tree.
+The \texttt{plot()} and \texttt{leaf()} functions will plot the GPA-Tree functional annotation tree and provide information about the leaves (terminal nodes) in the tree as shown below.
 
-```{r, eval=FALSE, include=TRUE, message=FALSE, warning=FALSE}
+```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 plot(fit.GPATree)
 ```
 
@@ -118,13 +130,22 @@ plot(fit.GPATree)
 leaf(fit.GPATree)
 ```
 
+<!-- # ```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE} -->
+<!-- # plot(fit.GPATree.pruned) -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # ```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE} -->
+<!-- # leaf(fit.GPATree.pruned) -->
+<!-- # ``` -->
+
 <!-- \subsection{Association mapping}\label{association} -->
 ### Association mapping\label{association}
 
-Based on the fitted GPA-Tree model, we can make statistical inference about SNPs by identifying: $(1)$ risk-associated SNPs and (2) the leaves of the GPA-Tree model in which the risk-associated SNP are located in using the code below.
+For the fitted GPA-Tree model, we can make inferences about SNPs using the \texttt{assoc()} function by: $(1)$ prioritizing risk-associated SNPs, and (2) identifying the leaves of the GPA-Tree model in which the risk-associated SNPs are located. The \texttt{assoc()} function returns two columns. The first column contains binary values where 1 indicates that the SNP is associated with the trait and 0 indicates otherwise. The second column provides information regarding the leaf in which the SNP is located in the GPA-Tree plot. The \texttt{assoc()} function allows both local (\texttt{fdrControl="local"}) and global FDR controls (\texttt{fdrControl="global"}) and users can set the threshold to be between 0 and 1 using the `\texttt{FDR}' argument. For \texttt{GPATreeExampleData}, GPA-Tree model identified $870$ risk SNPs at the nominal global FDR level of $0.01$. 371 and 499 of the 870 risk-associated SNPs are located in leaf 3 and leaf 5, respectively. The following lines of code can be used to investigate association mapping and functional annotation tree.
+
 ```{r, eval=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 assoc.SNP.GPATree <- assoc(fit.GPATree, 
-                           FDR = 0.05, 
+                           FDR = 0.01, 
                            fdrControl="global")
 head(assoc.SNP.GPATree)
 table(assoc.SNP.GPATree$P1)
@@ -132,7 +153,6 @@ table(assoc.SNP.GPATree$leaf)
 table(assoc.SNP.GPATree$P1, assoc.SNP.GPATree$leaf)
 ```
 
-The \texttt{GPATree\_assoc} function returns two columns. The first column contains binary values where 1 indicates that the SNP is associated with the phenotype and 0 indicates otherwise. The second column provides information regarding the leaf in which the SNP is located in the GPA-Tree plot. The \texttt{GPATree\_assoc} allows both local (\texttt{fdrControl="local"}) and global FDR controls (\texttt{fdrControl="global"}) and users can set the threshold using the argument `\texttt{FDR}'. For \texttt{GPATreeExampleData}, GPA-Tree model identified $1458$ risk SNPs at the nominal global FDR level of $0.05$.
 
 
 # References
